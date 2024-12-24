@@ -1,0 +1,91 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class MediaContent {
+    # string name
+    # string description
+    # int year
+    # float rating
+    + {abstract} string getType()
+    + void setName(string)
+    + void setDescription(string)
+    + void setYear(int)
+    + void setRating(float)
+    + string getName()
+    + string getDescription()
+    + int getYear()
+    + float getRating()
+}
+
+class Film {
+    - string actor
+    - int duration
+    + Film()
+    + Film(const Film&)
+    + void setActor(string)
+    + void setDuration(int)
+    + string getActor()
+    + int getDuration()
+    + string getType()
+    + Film operator+(const Film&)
+    + Film operator*(int)
+    + Film& operator++()
+}
+
+class Series {
+    # int episodes
+    # int seasons
+    # int episodeDuration
+    + Series()
+    + void setEpisodes(int)
+    + void setSeasons(int)
+    + void setEpisodeDuration(int)
+    + int getEpisodes()
+    + int getSeasons()
+    + int getEpisodeDuration()
+    + string getType()
+}
+
+class MiniSeries {
+    - bool limitedRun
+    + MiniSeries()
+    + void setLimitedRun(bool)
+    + bool isLimitedRun()
+}
+
+class FilmDatabase {
+    - MediaContent** films
+    - size_t size
+    - size_t capacity
+    + FilmDatabase()
+    + ~FilmDatabase()
+    + void addFilm()
+    + void deleteFilm()
+    + void printFilms()
+    + void searchFilmByActor()
+    + void combineFilms()
+    + void multiplyFilm()
+    + void incrementFilm()
+    + void compareFilms()
+    + void createSpecialVersion()
+    + void compareTotalDuration()
+}
+
+class FileManager {
+    - string currentFilename
+    + void setFilename(string)
+    + bool checkDatabase(const FilmDatabase&)
+    + void saveToFile(const FilmDatabase&)
+    + void loadFromFile(FilmDatabase&)
+}
+
+MediaContent <|-- Film
+MediaContent <|-- Series
+Series <|-- MiniSeries
+
+note right of Film : "friend bool validateDatabaseSize(const FilmDatabase&)"
+
+FilmDatabase "1" -- "*" MediaContent : contains >
+FileManager ..> FilmDatabase : manages >
+
+@enduml
